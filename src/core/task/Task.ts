@@ -1086,6 +1086,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 		if (this.abort) {
 			throw new Error(`[Costrict#say] task ${this.taskId}.${this.instanceId} aborted`)
 		}
+		const isRateLimitRetry = !!(type === "api_req_retry_delayed" && text && text?.startsWith("Rate limiting for"))
 
 		if (partial !== undefined) {
 			const lastMessage = this.clineMessages.at(-1)
@@ -1117,7 +1118,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 						images,
 						partial,
 						contextCondense,
-						metadata: options.metadata,
+						metadata: { ...options.metadata, isRateLimitRetry },
 					})
 				}
 			} else {

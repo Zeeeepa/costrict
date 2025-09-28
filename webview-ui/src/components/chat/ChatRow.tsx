@@ -1409,7 +1409,7 @@ export const ChatRowContent = ({
 							message={message.text || ""}
 							apiConfiguration={apiConfiguration}
 							additionalContent={
-								!message?.metadata?.isRateLimit ? (
+								!message?.metadata?.isRateLimit && !message?.metadata?.isRateLimitRetry ? (
 									<>
 										<br />
 										<br />
