@@ -629,6 +629,9 @@ export class ClineProvider
 	public static getVisibleInstance(): ClineProvider | undefined {
 		return findLast(Array.from(this.activeInstances), (instance) => instance.view?.visible === true)
 	}
+	public static getAllInstance(): ClineProvider | undefined {
+		return Array.from(this.activeInstances)[0]
+	}
 
 	public static async getInstance(): Promise<ClineProvider | undefined> {
 		let visibleProvider = ClineProvider.getVisibleInstance()
