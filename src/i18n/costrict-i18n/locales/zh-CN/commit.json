@@ -14,7 +14,8 @@
 		},
 		"message": {
 			"copiedToClipboard": "提交消息已生成，但无法自动填充到输入框中。提交消息已复制到剪贴板。",
-			"generationFailed": "生成提交消息失败：{{error}}"
+			"generationFailed": "生成提交消息失败：{{error}}",
+			"executing": "点击过于频繁，请等待当前提交生成完成"
 		},
 		"action": {
 			"addFile": "添加 {{0}}",

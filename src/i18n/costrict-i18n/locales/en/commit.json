@@ -14,7 +14,8 @@
 		},
 		"message": {
 			"copiedToClipboard": "Commit message generated but could not be automatically populated in the input box. The commit message has been copied to clipboard.",
-			"generationFailed": "Failed to generate commit message: {{error}}"
+			"generationFailed": "Failed to generate commit message: {{error}}",
+			"executing": "Please wait, commit generation is already in progress"
 		},
 		"action": {
 			"addFile": "add {{0}}",
