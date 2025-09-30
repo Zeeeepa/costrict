@@ -2248,6 +2248,7 @@ export class ClineProvider
 				// 	return false
 				// }
 			})(),
+			errorCode: stateValues.errorCode ?? {},
 		}
 	}
 

@@ -156,6 +156,8 @@ export const globalSettingsSchema = z.object({
 	hasOpenedModeSelector: z.boolean().optional(),
 	lastModeExportPath: z.string().optional(),
 	lastModeImportPath: z.string().optional(),
+
+	errorCode: z.record(z.string(), z.record(z.string(), z.string())).optional(),
 })
 
 export type GlobalSettings = z.infer<typeof globalSettingsSchema>
@@ -328,6 +330,8 @@ export const EVALS_SETTINGS: RooCodeSettings = {
 	mode: "code", // "architect",
 
 	customModes: [],
+
+	errorCode: {},
 }
 
 export const EVALS_TIMEOUT = 5 * 60 * 1_000
