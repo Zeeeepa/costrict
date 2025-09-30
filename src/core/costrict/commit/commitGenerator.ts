@@ -112,7 +112,7 @@ export class CommitMessageGenerator {
 			const aiSuggestion = await this.generateCommitMessageWithAI(diffInfo, options)
 			return aiSuggestion
 		} catch (error) {
-			console.log("AI generation failed, falling back to rule-based:", error)
+			this.provider?.log("AI generation failed, falling back to rule-based: " + error?.message)
 			// Fallback to rule-based analysis
 			const suggestion = this.analyzeChanges(diffInfo, options)
 			return suggestion

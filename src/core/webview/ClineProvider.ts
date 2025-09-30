@@ -2683,6 +2683,8 @@ export class ClineProvider
 			task?.api?.cancelChat?.(task.abortReason)
 		})
 
+		task?.api?.cancelChat?.(task.abortReason)
+
 		// Defensive safeguard: if current instance already changed, skip rehydrate
 		const current = this.getCurrentTask()
 		if (current && current.instanceId !== originalInstanceId) {
