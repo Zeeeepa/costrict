@@ -19,7 +19,13 @@ import { INDEX_GENERATION_TEMPLATE } from "./wiki-prompts/subtasks/10_Index_Gene
 export const projectWikiCommandName = "project-wiki"
 export const projectWikiCommandDescription = `Perform an in-depth analysis of the project and create a comprehensive project wiki.`
 
-const logger: ILogger = createLogger()
+// 创建 logger 实例，但允许在测试时被替换
+let logger: ILogger = createLogger()
+
+// 导出 logger setter 以便测试时可以替换
+export function setLogger(testLogger: ILogger): void {
+	logger = testLogger
+}
 
 // Template data mapping
 const TEMPLATES = {

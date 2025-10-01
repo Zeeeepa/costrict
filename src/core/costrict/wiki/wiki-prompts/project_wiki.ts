@@ -1,15 +1,11 @@
-import {
-	SUBTASK_FILENAMES,
-	subtaskDir,
-	deepAnalyzeThreshold,
-} from "./subtasks/constants"
+import { SUBTASK_FILENAMES, subtaskDir, deepAnalyzeThreshold } from "./subtasks/constants"
 
-export const projectWikiVersion = "v1.0.1"
+export const projectWikiVersion = "v1.0.3"
 const projectWikiCreateTime = new Date().toLocaleString()
 
 export const PROJECT_WIKI_TEMPLATE = `---
 description: "项目深度分析与知识文档生成"
-version: ${projectWikiVersion}
+version: "${projectWikiVersion}"
 createTime: ${projectWikiCreateTime}
 ---
 

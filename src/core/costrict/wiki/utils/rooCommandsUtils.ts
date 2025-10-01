@@ -7,11 +7,21 @@ import { getGlobalCommandsDir } from "../wiki-prompts/subtasks/constants"
  * @returns Returns true if the path is the .roo/commands directory or its subdirectory
  */
 export function isRooGlobalCommandsDirectory(filePath: string): boolean {
+	if (!filePath || filePath.trim() === "") {
+		return false
+	}
+	
 	const absolutePath = path.resolve(filePath)
 	const globalCommandsDir = getGlobalCommandsDir()
 
+	// Normalize paths to ensure consistent comparison
+	const normalizedAbsolutePath = absolutePath.replace(/\/+$/, '') // Remove trailing slashes
+	const normalizedGlobalCommandsDir = globalCommandsDir.replace(/\/+$/, '') // Remove trailing slashes
+	const separator = path.sep
+
 	// Check if the path starts with the .roo/commands directory
-	return absolutePath.startsWith(globalCommandsDir + path.sep) || absolutePath === globalCommandsDir
+	return normalizedAbsolutePath === normalizedGlobalCommandsDir ||
+	       normalizedAbsolutePath.startsWith(normalizedGlobalCommandsDir + separator)
 }
 
 /**
@@ -28,15 +38,18 @@ export function handleRooCommandsApprovalSkip(
 	cline: any,
 	updateFileResult: (relPath: string, result: any) => void,
 ): boolean {
-	if (fileResult.status === "pending") {
-		const fullPath = path.resolve(cline.cwd, relPath)
-		if (isRooGlobalCommandsDirectory(fullPath)) {
-			// Auto-approve .roo/commands files
-			updateFileResult(relPath, {
-				status: "approved",
-			})
-			return true
-		}
+	if (!fileResult || !fileResult.status || fileResult.status !== "pending") {
+		return false
 	}
+	
+	const fullPath = path.resolve(cline.cwd, relPath)
+	if (isRooGlobalCommandsDirectory(fullPath)) {
+		// Auto-approve .roo/commands files
+		updateFileResult(relPath, {
+			status: "approved",
+		})
+		return true
+	}
+	
 	return false
 }
