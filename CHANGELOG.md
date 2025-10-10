@@ -1,5 +1,14 @@
 # Costrict Change Log
 
+## [1.6.20]
+
+- Add workflow with requirements, design, tasks, and testing support
+- Add test guide functionality for project testing solutions
+- Add project wiki generation
+- Add development modes: Vibe and Strict
+- Improve type definitions and global settings
+- Fix known issues
+
 ## [1.6.19]
 
 - Optimized gemini-cli provider
