@@ -35,6 +35,10 @@ vi.mock("vscode", () => ({
 		createTextEditorDecorationType: vi.fn(() => ({
 			dispose: vi.fn(),
 		})),
+		createOutputChannel: vi.fn(() => ({
+			appendLine: vi.fn(),
+			dispose: vi.fn(),
+		})),
 	},
 	ProgressLocation: {
 		Notification: 15,
