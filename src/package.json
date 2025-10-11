@@ -737,6 +737,11 @@
 					"default": true,
 					"description": "%settings.commit.useConventionalCommits.description%"
 				},
+				"zgsm.commit.commitModelId": {
+					"type": "string",
+					"default": "",
+					"description": "%settings.commit.commitModelId.description%"
+				},
 				"zgsm.commit.maxLength": {
 					"type": "number",
 					"default": 72,

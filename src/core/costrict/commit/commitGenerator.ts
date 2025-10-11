@@ -196,6 +196,7 @@ export class CommitMessageGenerator {
 			{
 				language: lang,
 				maxLength: options.maxLength,
+				modelId: options.commitModelId,
 			},
 		)
 		if (!aiMessage) {

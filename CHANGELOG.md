@@ -7,7 +7,8 @@
 - Add project wiki generation
 - Add development modes: Vibe and Strict
 - Improve type definitions and global settings
-- add AI-assisted review suggestion
+- Add AI-assisted review suggestion
+- Add commit model setting
 - Fix known issues
 
 ## [1.6.19]
