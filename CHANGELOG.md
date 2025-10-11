@@ -9,6 +9,7 @@
 - Improve type definitions and global settings
 - Add AI-assisted review suggestion
 - Add commit model setting
+- Optimization costrict provider api performance
 - Fix known issues
 
 ## [1.6.19]
