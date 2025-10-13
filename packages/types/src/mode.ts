@@ -198,7 +198,7 @@ const WORKFLOW_MODES: readonly modelType[] = [
 		description: "Analyze and generate a testing plan",
 		groups: ["read", "edit", "command"],
 		source: "project",
-		workflow: false,
+		workflow: true,
 	},
 ]
 
