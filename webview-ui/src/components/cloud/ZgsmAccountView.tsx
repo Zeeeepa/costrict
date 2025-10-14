@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState, useMemo, memo } from "react"
 import { VSCodeButton } from "@vscode/webview-ui-toolkit/react"
-import { StarIcon, StarFilledIcon, CheckCircledIcon } from "@radix-ui/react-icons"
+import { StarIcon, StarFilledIcon, CheckCircledIcon, PlusIcon } from "@radix-ui/react-icons"
 
 import type { ProviderSettings, QuotaInfo } from "@roo-code/types"
 import { TelemetryEventName } from "@roo-code/types"
@@ -206,6 +206,10 @@ const QuotaInfoDisplay = memo(
 							<span className="text-xs text-vscode-descriptionForeground font-medium">
 								{t("cloud:quota.usedQuota")}
 							</span>
+							<span className="text-xs font-medium bg-gradient-to-br from-blue-400 to-blue-600 px-1.5 py-0.5 rounded-full cursor-pointer select-none text-white flex items-center gap-1">
+								获取更多配额
+								<PlusIcon width={12} height={12} />
+							</span>
 						</div>
 						<div className="flex items-baseline gap-1">
 							<span className="text-sm font-bold text-vscode-foreground group-hover:text-vscode-focusBorder transition-colors">
@@ -252,7 +256,7 @@ const ZgsmAccountViewComponent = ({ apiConfiguration, onDone }: AccountViewProps
 		const cloudUrl = `${apiConfiguration?.zgsmBaseUrl?.trim() || "https://zgsm.sangfor.com"}/credit/manager?state=${hash}`
 		vscode.postMessage({ type: "openExternal", url: cloudUrl })
 	}, [apiConfiguration?.zgsmBaseUrl, hash])
-
+	// https://zgsm.sangfor.com/credit/manager/credit-reward-plan?code=GY5P
 	const handleStarRepository = useCallback(() => {
 		vscode.postMessage({ type: "openExternal", url: "https://github.com/zgsm-ai/costrict" })
 	}, [])
