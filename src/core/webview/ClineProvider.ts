@@ -101,6 +101,8 @@ import { getClientId } from "../../utils/getClientId"
 import { defaultCodebaseIndexEnabled } from "../../services/code-index/constants"
 import { CodeReviewService, ReviewTargetType } from "../costrict/code-review"
 import { defaultLang } from "../../utils/language"
+import ZgsmCodebaseIndexManager from "../costrict/codebase-index"
+import { sendZgsmCloseWindow } from "../costrict/auth/ipc"
 
 /**
  * https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/default/weather-webview/src/providers/WeatherViewProvider.ts
@@ -2327,6 +2329,52 @@ export class ClineProvider
 
 	public async setValues(values: RooCodeSettings) {
 		await this.contextProxy.setValues(values)
+	}
+
+	async fixCodebase() {
+		let answer = await vscode.window.showInformationMessage(
+			t("common:confirmation.reset_codebase"),
+			{ modal: true },
+			t("common:answers.yes"),
+		)
+
+		if (answer !== t("common:answers.yes")) {
+			return
+		}
+		try {
+			// ZgsmCodebaseIndexManager.getInstance()
+			const zgsmCodebaseIndexManager = ZgsmCodebaseIndexManager.getInstance()
+			await zgsmCodebaseIndexManager.stopHealthCheck()
+			await zgsmCodebaseIndexManager.stopExistingClient()
+
+			const codebaseHomeDir = path.join(os.homedir(), ".costrict")
+			const codebaseIndexDirs = [
+				path.join(codebaseHomeDir, "bin"),
+				path.join(codebaseHomeDir, "cache"),
+				path.join(codebaseHomeDir, "logs"),
+				path.join(codebaseHomeDir, "package"),
+				path.join(codebaseHomeDir, "run"),
+				path.join(codebaseHomeDir, "share"),
+			]
+
+			for (const codebaseIndexDir of codebaseIndexDirs) {
+				try {
+					await fs.rm(codebaseIndexDir, { recursive: true, force: true })
+				} catch (error) {
+					this.log(
+						`Failed to remove ${codebaseIndexDir}: ${error instanceof Error ? error.message : String(error)}`,
+					)
+				}
+			}
+
+			sendZgsmCloseWindow(vscode.env.sessionId)
+			await delay(1000)
+			await vscode.commands.executeCommand("workbench.action.closeWindow")
+		} catch (error) {
+			vscode.window.showErrorMessage(
+				`Failed to reset codebase: ${error instanceof Error ? error.message : String(error)}`,
+			)
+		}
 	}
 
 	// dev

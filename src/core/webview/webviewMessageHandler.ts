@@ -812,6 +812,9 @@ export const webviewMessageHandler = async (
 		case "resetState":
 			await provider.resetState()
 			break
+		case "fixCodebase":
+			await provider.fixCodebase()
+			break
 		case "flushRouterModels":
 			const routerNameFlush: RouterName = toRouterName(message.text)
 			await flushModels(routerNameFlush)
