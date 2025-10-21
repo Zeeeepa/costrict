@@ -262,7 +262,7 @@ export class ZgsmAiHandler extends BaseProvider implements SingleCompletionHandl
 		requestId: string,
 		clientId: string,
 		workspacePath: string,
-		chatType?: string,
+		chatType?: "user" | "system",
 	): Record<string, string> {
 		return {
 			"Accept-Language": metadata?.language || "en",
@@ -685,14 +685,19 @@ export class ZgsmAiHandler extends BaseProvider implements SingleCompletionHandl
 		modelInfo: ModelInfo,
 	): void {
 		// Only add max_completion_tokens if includeMaxTokens is true
-		if (
-			(this.options.includeMaxTokens === true && this.options.useZgsmCustomConfig) ||
-			!this.options.useZgsmCustomConfig
-		) {
+		if (this.options.useZgsmCustomConfig) {
+			const maxTokens = this.options.modelMaxTokens || modelInfo.maxTokens
 			// Use user-configured modelMaxTokens if available, otherwise fall back to model's default maxTokens
 			// Using max_completion_tokens as max_tokens is deprecated
-			requestOptions[modelInfo.supportsMaxTokens ? "max_tokens" : "max_completion_tokens"] =
-				this.options.modelMaxTokens || modelInfo.maxTokens
+			if (this.options.includeMaxTokens) {
+				Object.assign(requestOptions, {
+					[modelInfo.maxTokensKey || "max_completion_tokens"]: maxTokens,
+				})
+			}
+		} else if (modelInfo.maxTokensKey) {
+			Object.assign(requestOptions, {
+				[modelInfo.maxTokensKey]: modelInfo.maxTokens,
+			})
 		}
 	}
 
