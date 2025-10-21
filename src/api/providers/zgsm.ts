@@ -691,8 +691,9 @@ export class ZgsmAiHandler extends BaseProvider implements SingleCompletionHandl
 		) {
 			// Use user-configured modelMaxTokens if available, otherwise fall back to model's default maxTokens
 			// Using max_completion_tokens as max_tokens is deprecated
-			requestOptions[modelInfo.supportsMaxTokens ? "max_tokens" : "max_completion_tokens"] =
-				this.options.modelMaxTokens || modelInfo.maxTokens
+			Object.assign(requestOptions, {
+				[modelInfo.maxTokensKey || "max_completion_tokens"]: this.options.modelMaxTokens || modelInfo.maxTokens,
+			})
 		}
 	}
 
