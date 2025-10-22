@@ -684,6 +684,8 @@ export class ZgsmAiHandler extends BaseProvider implements SingleCompletionHandl
 			| OpenAI.Chat.Completions.ChatCompletionCreateParamsNonStreaming,
 		modelInfo: ModelInfo,
 	): void {
+		const _m = requestOptions.model.toLocaleLowerCase()
+
 		// Only add max_completion_tokens if includeMaxTokens is true
 		if (this.options.useZgsmCustomConfig) {
 			const maxTokens = this.options.modelMaxTokens || modelInfo.maxTokens
