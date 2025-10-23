@@ -1,19 +1,20 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback /* useEffect, useState */ } from "react"
 import { ClipboardCopy } from "lucide-react"
 
 import { Button, StandardTooltip } from "@/components/ui"
 
 import { useAppTranslation } from "@src/i18n/TranslationContext"
-import { useExtensionState } from "@src/context/ExtensionStateContext"
+// import { useExtensionState } from "@src/context/ExtensionStateContext"
 import { SuggestionItem } from "@roo-code/types"
 
-const DEFAULT_FOLLOWUP_TIMEOUT_MS = 60000
-const COUNTDOWN_INTERVAL_MS = 1000
+// const DEFAULT_FOLLOWUP_TIMEOUT_MS = 60000
+// const COUNTDOWN_INTERVAL_MS = 1000
 
 interface FollowUpSuggestProps {
 	suggestions?: SuggestionItem[]
 	onSuggestionClick?: (suggestion: SuggestionItem, event?: React.MouseEvent) => void
 	ts: number
+	countdown?: number
 	onCancelAutoApproval?: () => void
 	isAnswered?: boolean
 }
@@ -22,69 +23,70 @@ export const FollowUpSuggest = ({
 	suggestions = [],
 	onSuggestionClick,
 	ts = 1,
+	countdown = 0,
 	onCancelAutoApproval,
 	isAnswered = false,
 }: FollowUpSuggestProps) => {
-	const { autoApprovalEnabled, alwaysAllowFollowupQuestions, followupAutoApproveTimeoutMs } = useExtensionState()
-	const [countdown, setCountdown] = useState<number | null>(null)
-	const [suggestionSelected, setSuggestionSelected] = useState(false)
+	// const { autoApprovalEnabled, alwaysAllowFollowupQuestions, followupAutoApproveTimeoutMs } = useExtensionState()
+	// const [countdown, setCountdown] = useState<number | null>(null)
+	// const [suggestionSelected, setSuggestionSelected] = useState(false)
 	const { t } = useAppTranslation()
 
-	// Start countdown timer when auto-approval is enabled for follow-up questions
-	useEffect(() => {
-		// Only start countdown if auto-approval is enabled for follow-up questions and no suggestion has been selected
-		// Also stop countdown if the question has been answered
-		if (
-			autoApprovalEnabled &&
-			alwaysAllowFollowupQuestions &&
-			suggestions.length > 0 &&
-			!suggestionSelected &&
-			!isAnswered
-		) {
-			// Start with the configured timeout in seconds
-			const timeoutMs =
-				typeof followupAutoApproveTimeoutMs === "number" && !isNaN(followupAutoApproveTimeoutMs)
-					? followupAutoApproveTimeoutMs
-					: DEFAULT_FOLLOWUP_TIMEOUT_MS
+	// // Start countdown timer when auto-approval is enabled for follow-up questions
+	// useEffect(() => {
+	// 	// Only start countdown if auto-approval is enabled for follow-up questions and no suggestion has been selected
+	// 	// Also stop countdown if the question has been answered
+	// 	if (
+	// 		autoApprovalEnabled &&
+	// 		alwaysAllowFollowupQuestions &&
+	// 		suggestions.length > 0 &&
+	// 		!suggestionSelected &&
+	// 		!isAnswered
+	// 	) {
+	// 		// Start with the configured timeout in seconds
+	// 		const timeoutMs =
+	// 			typeof followupAutoApproveTimeoutMs === "number" && !isNaN(followupAutoApproveTimeoutMs)
+	// 				? followupAutoApproveTimeoutMs
+	// 				: DEFAULT_FOLLOWUP_TIMEOUT_MS
 
-			// Convert milliseconds to seconds for the countdown
-			setCountdown(Math.floor(timeoutMs / 1000))
+	// 		// Convert milliseconds to seconds for the countdown
+	// 		setCountdown(Math.floor(timeoutMs / 1000))
 
-			// Update countdown every second
-			const intervalId = setInterval(() => {
-				setCountdown((prevCountdown) => {
-					if (prevCountdown === null || prevCountdown <= 1) {
-						clearInterval(intervalId)
-						return null
-					}
-					return prevCountdown - 1
-				})
-			}, COUNTDOWN_INTERVAL_MS)
+	// 		// Update countdown every second
+	// 		const intervalId = setInterval(() => {
+	// 			setCountdown((prevCountdown) => {
+	// 				if (prevCountdown === null || prevCountdown <= 1) {
+	// 					clearInterval(intervalId)
+	// 					return null
+	// 				}
+	// 				return prevCountdown - 1
+	// 			})
+	// 		}, COUNTDOWN_INTERVAL_MS)
 
-			// Clean up interval on unmount and notify parent component
-			return () => {
-				clearInterval(intervalId)
-				// Notify parent component that this component is unmounting
-				// so it can clear any related timeouts
-				onCancelAutoApproval?.()
-			}
-		} else {
-			setCountdown(null)
-		}
-	}, [
-		autoApprovalEnabled,
-		alwaysAllowFollowupQuestions,
-		suggestions,
-		followupAutoApproveTimeoutMs,
-		suggestionSelected,
-		onCancelAutoApproval,
-		isAnswered,
-	])
+	// 		// Clean up interval on unmount and notify parent component
+	// 		return () => {
+	// 			clearInterval(intervalId)
+	// 			// Notify parent component that this component is unmounting
+	// 			// so it can clear any related timeouts
+	// 			onCancelAutoApproval?.()
+	// 		}
+	// 	} else {
+	// 		setCountdown(null)
+	// 	}
+	// }, [
+	// 	autoApprovalEnabled,
+	// 	alwaysAllowFollowupQuestions,
+	// 	suggestions,
+	// 	followupAutoApproveTimeoutMs,
+	// 	suggestionSelected,
+	// 	onCancelAutoApproval,
+	// 	isAnswered,
+	// ])
 	const handleSuggestionClick = useCallback(
 		(suggestion: SuggestionItem, event: React.MouseEvent) => {
 			// Mark a suggestion as selected if it's not a shift-click (which just copies to input)
 			if (!event.shiftKey) {
-				setSuggestionSelected(true)
+				// setSuggestionSelected(true)
 				// Also notify parent component to cancel auto-approval timeout
 				// This prevents race conditions between visual countdown and actual timeout
 				onCancelAutoApproval?.()
@@ -117,7 +119,7 @@ export const FollowUpSuggest = ({
 							onClick={(event) => handleSuggestionClick(suggestion, event)}
 							aria-label={suggestion.answer}>
 							{suggestion.answer}
-							{isFirstSuggestion && countdown !== null && !suggestionSelected && !isAnswered && (
+							{isFirstSuggestion && countdown > 0 && !isAnswered && (
 								<span
 									className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-vscode-badge-background text-vscode-badge-foreground"
 									title={t("chat:followUpSuggest.autoSelectCountdown", { count: countdown })}>
@@ -137,7 +139,7 @@ export const FollowUpSuggest = ({
 								onClick={(e) => {
 									e.stopPropagation()
 									// Cancel the auto-approve timer when edit button is clicked
-									setSuggestionSelected(true)
+									// setSuggestionSelected(true)
 									onCancelAutoApproval?.()
 									// Simulate shift-click by directly calling the handler with shiftKey=true.
 									onSuggestionClick?.(suggestion, { ...e, shiftKey: true })

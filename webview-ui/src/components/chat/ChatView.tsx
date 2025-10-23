@@ -90,6 +90,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 	const { t } = useAppTranslation()
 	const { t: tSettings } = useTranslation("settings")
 	const modeShortcutText = `${isMac ? "⌘" : "Ctrl"} + . ${t("chat:forNextMode")}, ${isMac ? "⌘" : "Ctrl"} + Shift + . ${t("chat:forPreviousMode")}`
+	const [countdown, setCountdown] = useState<number>(0)
 
 	const {
 		clineMessages: messages,
@@ -1550,17 +1551,6 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			// Find if this message is in searchResults
 			// const matchingResult = searchResults.find((result) => result.ts === messageOrGroup.ts)
 			return searchResults.find((result) => result.ts === messageOrGroup.ts) !== undefined
-			// if (!matchingResult) {
-			// 	return false
-			// }
-
-			// const plainText = messageOrGroup.text || ""
-			// const query = searchQuery.trim()
-
-			// // Check if any match in the result overlaps with this message
-			// return matchingResult.matches.some((match: Match) =>
-			// 	plainText.substring(match.start, match.end).toLowerCase().includes(query.toLowerCase()),
-			// )
 		},
 		[searchQuery],
 	)
@@ -1600,6 +1590,7 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 					onSuggestionClick={handleSuggestionClickInRow} // This was already stabilized
 					onBatchFileResponse={handleBatchFileResponse}
 					onFollowUpUnmount={handleFollowUpUnmount}
+					countdown={countdown}
 					isFollowUpAnswered={messageOrGroup.isAnswered === true || messageOrGroup.ts === currentFollowUpTs}
 					editable={
 						messageOrGroup.type === "ask" &&
@@ -1635,10 +1626,11 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 			handleSuggestionClickInRow,
 			handleBatchFileResponse,
 			handleFollowUpUnmount,
+			countdown,
 			currentFollowUpTs,
 			shouldHighlight,
-			showSearch,
 			searchResults,
+			showSearch,
 			searchQuery,
 			alwaysAllowUpdateTodoList,
 			enableButtons,
@@ -1702,10 +1694,24 @@ const ChatViewComponent: React.ForwardRefRenderFunction<ChatViewRef, ChatViewPro
 					if (followUpData && followUpData.suggest && followUpData.suggest.length > 0) {
 						// Wait for the configured timeout before auto-selecting the first suggestion
 						await new Promise<void>((resolve) => {
-							autoApproveTimeoutRef.current = setTimeout(() => {
-								autoApproveTimeoutRef.current = null
-								resolve()
-							}, followupAutoApproveTimeoutMs)
+							let timeoutMs = Math.floor((followupAutoApproveTimeoutMs || 60000) / 1000)
+
+							setCountdown(timeoutMs)
+
+							const run = (resolve: any) => {
+								if (timeoutMs <= 0) {
+									resolve()
+									return
+								}
+								timeoutMs -= 1
+								autoApproveTimeoutRef.current = setTimeout(() => {
+									setCountdown(timeoutMs)
+									autoApproveTimeoutRef.current = null
+									run(resolve)
+								}, 1000)
+							}
+
+							run(resolve)
 						})
 
 						// Check if user responded manually
