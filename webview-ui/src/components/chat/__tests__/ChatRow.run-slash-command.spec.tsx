@@ -45,7 +45,7 @@ const renderChatRowWithProviders = (message: any, isExpanded = false) => {
 					onSuggestionClick={mockOnSuggestionClick}
 					onBatchFileResponse={mockOnBatchFileResponse}
 					onFollowUpUnmount={mockOnFollowUpUnmount}
-					isLastFollowUp={false}
+					isFollowUpAnswered={true}
 				/>
 			</QueryClientProvider>
 		</ExtensionStateContextProvider>,

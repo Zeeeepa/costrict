@@ -939,7 +939,7 @@ export class Task extends EventEmitter<TaskEvents> implements TaskLike {
 			// Find the last unanswered follow-up message using findLastIndex
 			const lastFollowUpIndex = findLastIndex(
 				this.clineMessages,
-				(msg) => msg.type === "ask" && msg.ask === "followup",
+				(msg) => msg.type === "ask" && msg.ask === "followup" && !msg.isLastFollowUp,
 			)
 
 			if (lastFollowUpIndex !== -1) {

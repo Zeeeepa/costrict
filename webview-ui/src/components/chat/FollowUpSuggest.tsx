@@ -17,7 +17,7 @@ interface FollowUpSuggestProps {
 	countdown?: number
 	onCancelAutoApproval?: () => void
 	// isAnswered?: boolean
-	isLastFollowUp?: boolean
+	isFollowUpAnswered?: boolean
 }
 
 export const FollowUpSuggest = ({
@@ -26,7 +26,7 @@ export const FollowUpSuggest = ({
 	ts = 1,
 	countdown = 0,
 	onCancelAutoApproval,
-	isLastFollowUp = true,
+	isFollowUpAnswered = true,
 	// isAnswered = false,
 }: FollowUpSuggestProps) => {
 	// const { autoApprovalEnabled, alwaysAllowFollowupQuestions, followupAutoApproveTimeoutMs } = useExtensionState()
@@ -121,7 +121,7 @@ export const FollowUpSuggest = ({
 							onClick={(event) => handleSuggestionClick(suggestion, event)}
 							aria-label={suggestion.answer}>
 							{suggestion.answer}
-							{isFirstSuggestion && countdown > 0 && !suggestionSelected && isLastFollowUp && (
+							{isFirstSuggestion && countdown > 0 && !suggestionSelected && !isFollowUpAnswered && (
 								<span
 									className="ml-2 px-1.5 py-0.5 text-xs rounded-full bg-vscode-badge-background text-vscode-badge-foreground"
 									title={t("chat:followUpSuggest.autoSelectCountdown", { count: countdown })}>

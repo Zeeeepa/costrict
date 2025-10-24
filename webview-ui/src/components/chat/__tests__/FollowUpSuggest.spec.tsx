@@ -90,7 +90,7 @@ describe("FollowUpSuggest", () => {
 				ts={123}
 				onCancelAutoApproval={mockOnCancelAutoApproval}
 				countdown={3}
-				isLastFollowUp={true}
+				isFollowUpAnswered={false}
 			/>,
 			defaultTestState,
 		)
@@ -107,7 +107,7 @@ describe("FollowUpSuggest", () => {
 				ts={123}
 				onCancelAutoApproval={mockOnCancelAutoApproval}
 				countdown={3}
-				isLastFollowUp={false}
+				isFollowUpAnswered={true}
 			/>,
 			defaultTestState,
 		)
@@ -159,7 +159,7 @@ describe("FollowUpSuggest", () => {
 				ts={123}
 				onCancelAutoApproval={mockOnCancelAutoApproval}
 				countdown={3}
-				isLastFollowUp={false}
+				isFollowUpAnswered={true}
 			/>,
 			defaultTestState,
 		)
@@ -176,7 +176,7 @@ describe("FollowUpSuggest", () => {
 				ts={123}
 				onCancelAutoApproval={mockOnCancelAutoApproval}
 				countdown={5}
-				isLastFollowUp={true}
+				isFollowUpAnswered={false}
 			/>,
 			defaultTestState,
 		)
@@ -238,7 +238,7 @@ describe("FollowUpSuggest", () => {
 				ts={123}
 				onCancelAutoApproval={mockOnCancelAutoApproval}
 				countdown={3}
-				isLastFollowUp={true}
+				isFollowUpAnswered={false}
 			/>,
 			defaultTestState,
 		)
@@ -256,7 +256,7 @@ describe("FollowUpSuggest", () => {
 						ts={123}
 						onCancelAutoApproval={mockOnCancelAutoApproval}
 						countdown={3}
-						isLastFollowUp={false}
+						isFollowUpAnswered={true}
 					/>
 				</TooltipProvider>
 			</TestExtensionStateProvider>,
@@ -274,7 +274,7 @@ describe("FollowUpSuggest", () => {
 				ts={123}
 				onCancelAutoApproval={mockOnCancelAutoApproval}
 				countdown={3}
-				isLastFollowUp={true}
+				isFollowUpAnswered={false}
 			/>,
 			defaultTestState,
 		)
@@ -292,7 +292,7 @@ describe("FollowUpSuggest", () => {
 						ts={123}
 						onCancelAutoApproval={mockOnCancelAutoApproval}
 						countdown={3}
-						isLastFollowUp={false}
+						isFollowUpAnswered={true}
 					/>
 				</TooltipProvider>
 			</TestExtensionStateProvider>,
@@ -310,7 +310,7 @@ describe("FollowUpSuggest", () => {
 				ts={123}
 				onCancelAutoApproval={mockOnCancelAutoApproval}
 				countdown={3}
-				isLastFollowUp={true}
+				isFollowUpAnswered={false}
 			/>,
 			defaultTestState,
 		)
@@ -328,7 +328,7 @@ describe("FollowUpSuggest", () => {
 						ts={123}
 						onCancelAutoApproval={mockOnCancelAutoApproval}
 						countdown={2}
-						isLastFollowUp={true}
+						isFollowUpAnswered={false}
 					/>
 				</TooltipProvider>
 			</TestExtensionStateProvider>,
@@ -347,7 +347,7 @@ describe("FollowUpSuggest", () => {
 						ts={123}
 						onCancelAutoApproval={mockOnCancelAutoApproval}
 						countdown={1}
-						isLastFollowUp={true}
+						isFollowUpAnswered={false}
 					/>
 				</TooltipProvider>
 			</TestExtensionStateProvider>,
@@ -366,7 +366,7 @@ describe("FollowUpSuggest", () => {
 						ts={123}
 						onCancelAutoApproval={mockOnCancelAutoApproval}
 						countdown={0}
-						isLastFollowUp={true}
+						isFollowUpAnswered={false}
 					/>
 				</TooltipProvider>
 			</TestExtensionStateProvider>,
@@ -384,7 +384,7 @@ describe("FollowUpSuggest", () => {
 				ts={123}
 				onCancelAutoApproval={mockOnCancelAutoApproval}
 				countdown={3}
-				isLastFollowUp={true}
+				isFollowUpAnswered={false}
 			/>,
 			defaultTestState,
 		)
