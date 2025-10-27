@@ -1,8 +1,6 @@
 import os from "os"
 import { getOperatingSystem } from "../../../utils/zgsmUtils"
 
-import { getShell } from "../../../utils/shell"
-
 export function getSystemInfoSection(cwd: string, shell?: string): string {
 	let details = `====
 

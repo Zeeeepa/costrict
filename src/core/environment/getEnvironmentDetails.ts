@@ -235,12 +235,11 @@ export async function getEnvironmentDetails(cline: Task, includeFileDetails: boo
 	}
 
 	details += `\n\n# Operating System\n${getOperatingSystem()}`
-	details += `\n\n# Default Shell\n${shell}`
+	details += `\n\n# Current Shell\n${shell}`
 	const winTerminalInfo = await getWindowsTerminalInfo(shell)
 
 	if (winTerminalInfo) {
-		const { version, name, unsupportSyntax, features } = winTerminalInfo
-		details += `\n\n# Shell Version\n${name} ${version}`
+		const { unsupportSyntax, features } = winTerminalInfo
 
 		if (unsupportSyntax) {
 			details += `\n\n## Shell Unsupport Syntax\n${formatUnsupport(unsupportSyntax)}`

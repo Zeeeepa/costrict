@@ -46,16 +46,13 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 				const shellName = shellPath.toLowerCase()
 
 				// Check if it's PowerShell (pwsh.exe or powershell.exe)
-				if (shellName.includes("pwsh") || shellName.includes("powershell")) {
-					// PowerShell syntax for setting UTF-8 encoding
-					actualCommand = `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; ${command}`
-				} else if (shellName.includes("cmd")) {
+				if (shellName.includes("cmd")) {
 					// CMD syntax for setting UTF-8 encoding
 					actualCommand = `chcp 65001 >nul 2>&1 && ${command}`
 				}
 			}
 
-			this.subprocess = execa(actualCommand, {
+			this.subprocess = execa({
 				shell: true,
 				cwd: this.terminal.getCurrentWorkingDirectory(),
 				all: true,
@@ -66,7 +63,7 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 					LANG: "en_US.UTF-8",
 					LC_ALL: "en_US.UTF-8",
 				},
-			})
+			})`${actualCommand}`
 
 			this.pid = this.subprocess.pid
 
