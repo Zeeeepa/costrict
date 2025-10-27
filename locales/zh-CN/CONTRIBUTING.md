@@ -74,7 +74,7 @@ CoStrict 是一个由社区驱动的项目，我们高度重视每一份贡献�
 ### 决定要做什么
 
 - 查看 [GitHub 项目](https://github.com/zgsm-ai/costrict/projects) 中未分配的 "Good First Issues"。
-- 文档相关，请访问 [Costrict Docs](https://docs.costrict.ai/)。
+- 文档相关，请访问 [CoStrict Docs](https://docs.costrict.ai/)。
 
 ### 报告 Bug
 

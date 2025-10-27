@@ -59,7 +59,7 @@ export default function Privacy() {
 						</li>
 						<li>
 							create an account for, sign in to, or otherwise use <strong>CoStrict Cloud</strong> at{" "}
-							<strong>costrict.ai</strong> or through the Costrict extension while authenticated to that
+							<strong>costrict.ai</strong> or through the CoStrict extension while authenticated to that
 							Cloud account (the <em>Cloud Service</em>).
 						</li>
 					</ul>

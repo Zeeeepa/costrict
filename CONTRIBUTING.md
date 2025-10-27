@@ -74,7 +74,7 @@ All contributions must begin with a GitHub Issue.
 ### Deciding What to Work On
 
 - Check the [GitHub Project](https://github.com/zgsm-ai/costrict/projects) for unassigned "Good First Issues."
-- For docs, visit [Costrict Docs](https://docs.costrict.ai/).
+- For docs, visit [CoStrict Docs](https://docs.costrict.ai/).
 
 ### Reporting Bugs
 
