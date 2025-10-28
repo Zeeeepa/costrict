@@ -219,9 +219,14 @@ function getWindowsShellFromVSCode(): string | null {
 			return normalizedPath
 		} else if (profile?.source === "PowerShell") {
 			// If the profile is sourced from PowerShell, assume the newest
-			if (!pwshInstalled && fs.statSync(SHELL_PATHS.POWERSHELL_7).isFile()) {
+			try {
+				if (!pwshInstalled && fs.statSync(SHELL_PATHS.POWERSHELL_7).isFile()) {
+					return SHELL_PATHS.POWERSHELL_7
+				}
+			} catch (error) {
+				return SHELL_PATHS.POWERSHELL_LEGACY
+			} finally {
 				pwshInstalled = true
-				return SHELL_PATHS.POWERSHELL_7
 			}
 		}
 		// Otherwise, assume legacy Windows PowerShell

@@ -63,21 +63,16 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 					shell: shellPath,
 					// encoding: "utf8"
 				})
-
 				// Check if it's PowerShell (pwsh.exe or powershell.exe)
 				if (shellName.includes("cmd")) {
-					actualCommand = ["@echo off", "chcp 65001 >nul 2>&1", "set PYTHONIOENCODING=utf-8", command].join(
-						" && ",
-					)
-					this.subprocess = execa(opt as Options)`${actualCommand}`
+					this.subprocess = execa(opt as Options)`chcp 65001 >nul 2>&1 && ${command}`
 				} else if (shellName.includes("powershell") || shellName.includes("pwsh")) {
 					opt.shell = false
 					const psCommand = [
-						"start-sleep -milliseconds 100",
-						"$OutputEncoding = [System.Text.Encoding]::UTF8",
 						"[Console]::OutputEncoding = [System.Text.Encoding]::UTF8",
 						"[Console]::InputEncoding = [System.Text.Encoding]::UTF8",
 						"$env:PYTHONIOENCODING = 'utf-8'",
+						"start-sleep -milliseconds 100",
 						command,
 					].join("; ")
 					this.subprocess = execa(
@@ -87,7 +82,7 @@ export class ExecaTerminalProcess extends BaseTerminalProcess {
 					)
 				} else {
 					// Git Bash 或其他 shell，使用 Unix 风格的编码设置
-					this.subprocess = execa(opt as Options)`${actualCommand}`
+					this.subprocess = execa(shellPath, [actualCommand], opt as Options)
 				}
 			} else {
 				// On non-Windows, ensure UTF-8 encoding for Ruby, CocoaPods, etc.
