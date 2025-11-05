@@ -284,6 +284,7 @@ export async function addCustomInstructions(
 		process.env.NODE_ENV === "test"
 			? []
 			: [
+					`- **IMPORTANT: Only use tools, plugins, or complex actions when the question explicitly involves file reading/writing/editing/creating, project scanning, debugging, implementation (e.g., writing or modifying code), or deep technical analysis.**`,
 					`- **IMPORTANT: If the question is clearly informal or lacks actionable meaning (e.g., "hello", "who are you", "tell me a joke"), respond politely without attempting any deep logic or tool usage, and immediately respond using the \`attempt_completion\` tool.**`,
 					`- **IMPORTANT: If the file is not found, use \`ask_followup_question\` to inform the user and get two suggest: Skip or Create**`,
 					shellPath
