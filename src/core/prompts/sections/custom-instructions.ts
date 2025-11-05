@@ -286,11 +286,8 @@ export async function addCustomInstructions(
 			: [
 					`- **IMPORTANT: If the question is clearly informal or lacks actionable meaning (e.g., "hello", "who are you", "tell me a joke"), respond politely without attempting any deep logic or tool usage, and immediately respond using the \`attempt_completion\` tool.**`,
 					`- **IMPORTANT: If the file is not found, use \`ask_followup_question\` to inform the user and get two suggest: Skip or Create**`,
-					shellPath &&
-					(shellPath.includes("powershell.exe") ||
-						shellPath.includes("pwsh.exe") ||
-						shellPath.includes("cmd.exe"))
-						? `- **IMPORTANT: Before using the \`execute_command\` tool, you must first think about the <environment_details> context provided to understand the user's environment and tailor your commands to ensure they are compatible with their system.It must be ensured that the encoding during command execution is UTF-8. **`
+					shellPath
+						? `- **IMPORTANT: Always use the system's default shell (defined by ${shellPath}) when executing commands. Review <environment_details> to adapt commands to the user’s environment, and make sure all execution and output use UTF-8 encoding. **`
 						: "",
 				]
 
