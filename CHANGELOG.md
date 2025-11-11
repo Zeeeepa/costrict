@@ -1,5 +1,9 @@
 # CoStrict Change Log
 
+## [2.0.12]
+
+- Fix codereview (#638)
+
 ## [2.0.11]
 
 - Update docs
