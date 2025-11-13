@@ -74,6 +74,7 @@ import { writeCostrictAccessToken } from "../costrict/codebase-index/utils"
 import { workspaceEventMonitor } from "../costrict/codebase-index/workspace-event-monitor"
 import { fetchZgsmQuotaInfo, fetchZgsmInviteCode } from "../../api/providers/fetchers/zgsm"
 import { initNotificationService } from "../costrict/notification"
+import delay from "delay"
 // import { ensureProjectWikiSubtasksExists } from "../costrict/wiki/projectWikiHelpers"
 
 export const webviewMessageHandler = async (
@@ -595,7 +596,6 @@ export const webviewMessageHandler = async (
 			if (message.updatedSettings) {
 				for (const [key, value] of Object.entries(message.updatedSettings)) {
 					let newValue = value
-					provider.log(`${key} 配置开始保存`, "info", "updateSettings")
 					if (key === "language") {
 						newValue = value ?? "en"
 						changeLanguage(newValue as Language)
@@ -666,7 +666,7 @@ export const webviewMessageHandler = async (
 						const mcpHub = provider.getMcpHub()
 
 						if (mcpHub) {
-							mcpHub.handleMcpEnabledChange(newValue as boolean)
+							await Promise.race([mcpHub.handleMcpEnabledChange(newValue as boolean), delay(2000)])
 						}
 					} else if (key === "experiments") {
 						if (!value) {
@@ -684,7 +684,6 @@ export const webviewMessageHandler = async (
 					}
 
 					await provider.contextProxy.setValue(key as keyof RooCodeSettings, newValue)
-					provider.log(`${key} 配置保存完成`, "info", "updateSettings")
 				}
 
 				await provider.postStateToWebview()
