@@ -15,6 +15,7 @@ import { supportPrompt } from "../../../shared/support-prompt"
 import { getChangedFiles } from "../../../utils/git"
 import { t } from "../../../i18n"
 import { GitCommitListener } from "./gitCommitListener"
+import { isJetbrainsPlatform } from "../../../utils/platform"
 
 let commitListener: GitCommitListener | undefined
 
@@ -35,10 +36,15 @@ export function initCodeReview(
 	reviewInstance.setProvider(provider)
 	reviewInstance.setCommentService(commentService)
 
-	commitListener = new GitCommitListener(context, reviewInstance)
-	commitListener.startListening().catch((error) => {
-		provider.log(`[GitCommitListener] Failed to start: ${error}`)
-	})
+	if (isJetbrainsPlatform()) {
+		console.log("Running on JetBrains platform, Git extension dependency not required")
+		return
+	} else {
+		commitListener = new GitCommitListener(context, reviewInstance)
+		commitListener.startListening().catch((error) => {
+			provider.log(`[GitCommitListener] Failed to start: ${error}`)
+		})
+	}
 
 	const commandMap: Partial<Record<CostrictCommandId, any>> = {
 		codeReviewButtonClicked: async () => {
