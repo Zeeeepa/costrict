@@ -139,7 +139,7 @@ export class ZgsmAiHandler extends BaseProvider implements SingleCompletionHandl
 		}
 
 		try {
-			const tokens = await ZgsmAuthService.getInstance().getTokens()
+			const tokens = await ZgsmAuthService.getInstance()?.getTokens()
 			this.client.apiKey = tokens?.access_token || "not-provided"
 		} catch (error) {
 			this.logger.info(
@@ -274,6 +274,7 @@ export class ZgsmAiHandler extends BaseProvider implements SingleCompletionHandl
 			...(this.options.useZgsmCustomConfig ? (this.options.openAiHeaders ?? {}) : {}),
 			"x-quota-identity": chatType || "system",
 			"X-Request-ID": requestId,
+			"x-user-id": metadata?.userId || "",
 			"zgsm-task-id": metadata?.taskId || "",
 			"zgsm-request-id": requestId,
 			"zgsm-client-id": clientId,
@@ -513,12 +514,14 @@ export class ZgsmAiHandler extends BaseProvider implements SingleCompletionHandl
 
 	async updateModelInfo() {
 		const id = this.options.zgsmModelId ?? zgsmDefaultModelId
-		const info =(await getModels({
-				provider: "zgsm",
-				baseUrl: `${this.options.zgsmBaseUrl?.trim() || ZgsmAuthConfig.getInstance().getDefaultApiBaseUrl()}`,
-				apiKey: this.options.zgsmAccessToken,
-			})
-		)[id] ?? zgsmModels.default
+		const info =
+			(
+				await getModels({
+					provider: "zgsm",
+					baseUrl: `${this.options.zgsmBaseUrl?.trim() || ZgsmAuthConfig.getInstance().getDefaultApiBaseUrl()}`,
+					apiKey: this.options.zgsmAccessToken,
+				})
+			)[id] ?? zgsmModels.default
 
 		if (id.toLowerCase().includes("gemini")) {
 			Object.assign(info, {
