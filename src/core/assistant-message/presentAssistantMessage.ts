@@ -430,7 +430,7 @@ export async function presentAssistantMessage(cline: Task) {
 				// reviewed it, and we can declare task is finished and return
 				// control to the parent task to continue running the rest of
 				// the sub-tasks.
-				const toolMessage = JSON.stringify({ tool: "finishTask" })
+				const toolMessage = JSON.stringify({ tool: "finishTask", parentTaskId: cline.parentTaskId })
 				return await askApproval("tool", toolMessage)
 			}
 
