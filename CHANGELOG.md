@@ -1,8 +1,13 @@
 # CoStrict Change Log
 
+## [2.0.18]
+
+- Add vibeplus built-in commands
+- Sync roocode [last commit](https://github.com/zgsm-ai/costrict/commit/5b64aa95f6ee67623099803784696cfd993d87d7)
+- Fix known issues
+
 ## [2.0.17]
 
--
 - Fix WriteToFileTool.handlePartial
 - Update About page
 - Fix finishSubTask no taskId when canceling or deleting tasks
