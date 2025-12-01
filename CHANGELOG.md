@@ -1,5 +1,9 @@
 # CoStrict Change Log
 
+## [2.0.21]
+
+- Remove apiRequestBlockHide setting and related UI components
+
 ## [2.0.20]
 
 - Update files prompt
